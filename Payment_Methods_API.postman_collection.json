@@ -1,0 +1,103 @@
+{
+  "info": {
+    "name": "Payment Methods API",
+    "description": "Collection for testing Payment Methods API endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get All Payment Methods",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/users/1/payment-methods",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "users", "1", "payment-methods"]
+        },
+        "description": "Get all payment methods for a user"
+      },
+      "response": []
+    },
+    {
+      "name": "Get Default Payment Method",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/users/1/payment-methods/default",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "users", "1", "payment-methods", "default"]
+        },
+        "description": "Get the default payment method for a user"
+      },
+      "response": []
+    },
+    {
+      "name": "Set Default Payment Method",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"type\": \"creditcard\",\n    \"id\": \"c073669a-4ee7-49c1-8a3d-924bc19d8ee9\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/users/1/payment-methods/default",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "users", "1", "payment-methods", "default"]
+        },
+        "description": "Set a payment method as default"
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Payment Method",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/users/1/payment-methods/c073669a-4ee7-49c1-8a3d-924bc19d8ee9",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "users", "1", "payment-methods", "c073669a-4ee7-49c1-8a3d-924bc19d8ee9"],
+          "variable": [
+            {
+              "key": "methodId",
+              "value": "c073669a-4ee7-49c1-8a3d-924bc19d8ee9"
+            }
+          ]
+        },
+        "description": "Delete a payment method"
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000"
+    },
+    {
+      "key": "userId",
+      "value": "1"
+    }
+  ]
+}
