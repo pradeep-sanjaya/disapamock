@@ -1,4 +1,5 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, abort
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -191,6 +192,49 @@ def delete_payment_method(user_id, method_id):
         "message": f"{method_type} payment method deleted successfully",
         "data": None
     })
+
+@app.route('/api/recurrent/payment/charge', methods=['POST'])
+def charge_recurrent_payment():
+    """Process a recurrent payment charge"""
+    data = request.get_json()
+    
+    # Validate required fields
+    required_fields = ['userId', 'amount', 'currency', 'productId']
+    missing_fields = [field for field in required_fields if field not in data]
+    if missing_fields:
+        return jsonify({
+            "success": False,
+            "message": f"Missing required fields: {', '.join(missing_fields)}",
+            "data": None
+        }), 400
+    
+    # Set default values for optional fields
+    request_source = data.get('requestSource', 'hypermart')
+    
+    # Generate a mock response
+    response_data = {
+        "success": True,
+        "message": "Recurrent payment processed successfully",
+        "data": {
+            "transactionId": f"TXN{str(hash(str(data)))[1:10]}",
+            "userId": data['userId'],
+            "amount": data['amount'],
+            "currency": data['currency'],
+            "productId": data['productId'],
+            "status": "COMPLETED",
+            "timestamp": datetime.utcnow().isoformat() + 'Z',
+            "metadata": {
+                "requestSource": request_source,
+                "pgCode": data.get('pgCode'),
+                "enticementChannel": data.get('enticementChannel'),
+                "songCode": data.get('songCode'),
+                "songName": data.get('songName'),
+                "artist": data.get('artist')
+            }
+        }
+    }
+    
+    return jsonify(response_data), 200
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

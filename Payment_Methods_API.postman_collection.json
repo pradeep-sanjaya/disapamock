@@ -6,16 +6,42 @@
   },
   "item": [
     {
+      "name": "Charge Recurrent Payment",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"userId\": \"USER-X\",\n  \"pgCode\": \"PG_1007\",\n  \"amount\": 105.00,\n  \"currency\": \"TZS\",\n  \"requestSource\": \"hypermart\",\n  \"productId\": \"PROD001\",\n  \"enticementChannel\": \"SMS\",\n  \"songCode\": \"SONG_XX\",\n  \"songName\": \"SONG_POP\",\n  \"artist\": \"ART_XX\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/recurrent/payment/charge",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "recurrent", "payment", "charge"]
+        },
+        "description": "Process a recurrent payment charge"
+      },
+      "response": []
+    },
+    {
       "name": "Get All Payment Methods",
       "request": {
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "http://localhost:5000/api/users/1/payment-methods",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "5000",
-          "path": ["api", "users", "1", "payment-methods"]
+          "raw": "{{baseUrl}}/api/users/{{userId}}/payment-methods",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "users", "{{userId}}", "payment-methods"]
         },
         "description": "Get all payment methods for a user"
       },
@@ -27,11 +53,9 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "http://localhost:5000/api/users/1/payment-methods/default",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "5000",
-          "path": ["api", "users", "1", "payment-methods", "default"]
+          "raw": "{{baseUrl}}/api/users/{{userId}}/payment-methods/default",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "users", "{{userId}}", "payment-methods", "default"]
         },
         "description": "Get the default payment method for a user"
       },
@@ -57,11 +81,9 @@
           }
         },
         "url": {
-          "raw": "http://localhost:5000/api/users/1/payment-methods/default",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "5000",
-          "path": ["api", "users", "1", "payment-methods", "default"]
+          "raw": "{{baseUrl}}/api/users/{{userId}}/payment-methods/default",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "users", "{{userId}}", "payment-methods", "default"]
         },
         "description": "Set a payment method as default"
       },
@@ -73,17 +95,9 @@
         "method": "DELETE",
         "header": [],
         "url": {
-          "raw": "http://localhost:5000/api/users/1/payment-methods/c073669a-4ee7-49c1-8a3d-924bc19d8ee9",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "5000",
-          "path": ["api", "users", "1", "payment-methods", "c073669a-4ee7-49c1-8a3d-924bc19d8ee9"],
-          "variable": [
-            {
-              "key": "methodId",
-              "value": "c073669a-4ee7-49c1-8a3d-924bc19d8ee9"
-            }
-          ]
+          "raw": "{{baseUrl}}/api/users/{{userId}}/payment-methods/{{methodId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "users", "{{userId}}", "payment-methods", "{{methodId}}"]
         },
         "description": "Delete a payment method"
       },
@@ -98,6 +112,10 @@
     {
       "key": "userId",
       "value": "1"
+    },
+    {
+      "key": "methodId",
+      "value": "c073669a-4ee7-49c1-8a3d-924bc19d8ee9"
     }
   ]
 }
