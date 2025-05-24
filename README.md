@@ -50,7 +50,72 @@ The API will be available at `http://localhost:5000`
 
 ## API Endpoints
 
-### 1. Get All Payment Methods
+### 1. Charge Recurrent Payment
+- **URL**: `/api/recurrent/payment/charge`
+- **Method**: `POST`
+- **Request Body**:
+  ```json
+  {
+    "userId": "USER-X",
+    "pgCode": "PG_1007",
+    "amount": 105.00,
+    "currency": "TZS",
+    "requestSource": "hypermart",
+    "productId": "PROD001",
+    "enticementChannel": "SMS",
+    "songCode": "SONG_XX",
+    "songName": "SONG_POP",
+    "artist": "ART_XX"
+  }
+  ```
+- **Required Fields**: `userId`, `amount`, `currency`, `productId`
+- **Optional Fields**: `requestSource` (default: "hypermart"), `pgCode`, `enticementChannel`, `songCode`, `songName`, `artist`
+- **### Response Status
+
+Possible values for the `status` field in the response:
+
+| Status | Description |
+|--------|-------------|
+| PENDING | Payment has been initiated but not yet processed |
+| PROCESSING | Payment is currently being processed |
+| COMPLETED | Payment was successfully processed |
+| FAILED | Payment processing failed |
+| DECLINED | Payment was declined by the payment gateway |
+| REFUNDED | Payment was refunded to the customer |
+| PARTIALLY_REFUNDED | Only part of the payment was refunded |
+| CANCELLED | Payment was cancelled before completion |
+| EXPIRED | Payment link or authorization expired |
+| AUTHORIZED | Payment is authorized but not yet captured |
+| VOIDED | Authorization was voided before completion |
+
+### Response
+  ```json
+  {
+    "success": true,
+    "message": "Recurrent payment processed successfully",
+    "data": {
+      "transactionId": "TXN12345678",
+      "userId": "USER-X",
+      "amount": 105.00,
+      "currency": "TZS",
+      "productId": "PROD001",
+      "status": "COMPLETED", /* Possible values: PENDING, PROCESSING, COMPLETED, FAILED, DECLINED, 
+                              REFUNDED, PARTIALLY_REFUNDED, CANCELLED, EXPIRED, 
+                              AUTHORIZED, VOIDED */
+      "timestamp": "2025-05-24T12:00:00Z",
+      "metadata": {
+        "requestSource": "hypermart",
+        "pgCode": "PG_1007",
+        "enticementChannel": "SMS",
+        "songCode": "SONG_XX",
+        "songName": "SONG_POP",
+        "artist": "ART_XX"
+      }
+    }
+  }
+  ```
+
+### 2. Get All Payment Methods
 - **URL**: `/api/users/{userId}/payment-methods`
 - **Method**: `GET`
 - **Response**: List of all payment methods for the user
@@ -80,6 +145,33 @@ The API will be available at `http://localhost:5000`
 ## Testing
 
 ### Using Postman
+1. Import the `Payment_Methods_API.postman_collection.json` file into Postman
+2. The collection includes all available endpoints including the new Recurrent Payment Charge
+3. Make sure to update any variables (like `userId`) in the Postman environment if needed
+
+### Using cURL
+
+#### Charge Recurrent Payment
+```bash
+curl -X POST http://localhost:5000/api/recurrent/payment/charge \
+  -H "Content-Type: application/json" \
+  -d '{
+    "userId": "USER-X",
+    "pgCode": "PG_1007",
+    "amount": 105.00,
+    "currency": "TZS",
+    "requestSource": "hypermart",
+    "productId": "PROD001",
+    "enticementChannel": "SMS",
+    "songCode": "SONG_XX",
+    "songName": "SONG_POP",
+    "artist": "ART_XX"
+  }'
+```
+
+#### Other Endpoints
+
+#### Get All Payment Methods
 1. Import the `Payment_Methods_API.postman_collection.json` file into Postman
 2. Make sure the API server is running
 3. Execute the requests from the collection
